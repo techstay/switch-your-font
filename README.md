@@ -1,71 +1,34 @@
-# font-switcher README
+# Switch your font
 
-This is the README for your extension "font-switcher". After writing up a brief description, we recommend including the following sections.
+This extension allows you to configure editor and terminal fonts quickly in a quickPick menu.
 
-## Features
+## Commands
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### > Switch Font
 
-For example if there is an image subfolder under your extension project workspace:
+![live preview menu in action for editor font](https://i.ibb.co/WvvtwrkF/switch-font.webp)
 
-\!\[feature X\]\(images/feature-x.png\)
+### > Switch Terminal Font
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+![live preview menu in action for terminal font](https://i.ibb.co/cSCNTvZF/switch-terminal-font.webp)
 
-## Requirements
+### > Font Size
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+![changing editor font size](https://i.ibb.co/mFCvBnL3/set-font-size.webp)
 
-## Extension Settings
+### > Terminal Font Size
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+![changing terminal font size](https://i.ibb.co/JjscMqhD/set-terminal-font-size.webp)
 
-For example:
+## Extension Commands
 
-This extension contributes the following settings:
+This extension contributes the following commands:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+- `font-switcher.switchFont`: Show a quickPick menu of the user defined editor font families.
+- `font-switcher.setFontSize`: Show an input dialog for setting the font size
+- `font-switcher.switchTerminalFont`: Show a quickPick menu of the user defined integrated terminal font families
+- `font-switcher.setTerminalFontSize`: Show an input dialog for setting the terminal font size
 
-## Known Issues
+## Thanks
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+This extension is based on [font-switcher](https://github.com/evan-buss/font-switcher), thanks for the great work.
