@@ -24,6 +24,7 @@
   "extensionKind": [
     "ui"
   ],
+  "icon": "icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/techstay/switch-your-font"
