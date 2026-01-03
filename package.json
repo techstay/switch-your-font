@@ -2,7 +2,7 @@
   "name": "switch-your-font",
   "displayName": "Switch Your Font",
   "description": "Quickly switch your font for editors and terminals.",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "publisher": "techstay1989",
   "engines": {
     "vscode": "^1.104.0"
