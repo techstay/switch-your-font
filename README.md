@@ -1,5 +1,9 @@
 # Switch your font
 
+![Visual Studio Marketplace](https://img.shields.io/visual-studio-marketplace/v/techstay1989.switch-your-font?style=for-the-badge&color=%2341BC13)
+![Visual Studio Marketplace](https://img.shields.io/visual-studio-marketplace/d/techstay1989.switch-your-font?style=for-the-badge)
+![Visual Studio Marketplace](https://img.shields.io/visual-studio-marketplace/stars/techstay1989.switch-your-font?style=for-the-badge)
+
 This extension allows you to configure editor and terminal fonts quickly in a quickPick menu.
 
 ## Commands
