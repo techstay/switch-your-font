@@ -1,66 +1,64 @@
 import { type QuickPickItem, window } from 'vscode';
-import { getConfig, parseFontString, type Target } from './util';
+import {
+	type ConfigType,
+	getFontConfiguration,
+	getFontList,
+	setFontList,
+} from './util';
 
 interface FontMenuItem extends QuickPickItem {
 	type: 'font' | 'button';
 }
 
 // Show a quick pick menu for selecting font
-export async function selectFont(target: Target): Promise<void> {
-	const targetConfig = getConfig(target);
-	const existingFonts = parseFontString(targetConfig.fontFamily).filter(
-		(x) => !!x,
-	);
+export async function selectFont(type: ConfigType): Promise<void> {
+	const currentFonts = getFontList(type);
 
 	// Construct quick pick menu options.
 	const menuItems: FontMenuItem[] = [
-		...existingFonts.map((font) => <FontMenuItem>{ label: font, type: 'font' }),
+		...currentFonts.map((font) => <FontMenuItem>{ label: font, type: 'font' }),
 		{ alwaysShow: true, label: '$(add) Add Font', type: 'button' },
 		{ alwaysShow: true, label: '$(trash) Remove Font', type: 'button' },
 	];
 
 	// Show the picker and display the currently selected font
 	const selection = await window.showQuickPick(menuItems, {
-		placeHolder: `Select ${target} Font`,
+		placeHolder: `Select ${type} Font`,
 		onDidSelectItem: (selection: FontMenuItem) => {
-			// Show original settings if button. Otherwise show selected font.
-			targetConfig.update(
-				'fontFamily',
-				selection.type === 'button' ? targetConfig.fontFamily : selection.label,
-				true,
-			);
+			if (selection.type === 'font') {
+				const newFonts = [
+					selection.label,
+					...currentFonts.filter((f) => f !== selection.label),
+				];
+				setFontList(type, newFonts);
+			} else {
+				// For buttons, revert to original font temporarily
+				setFontList(type, currentFonts);
+			}
 		},
 	});
 
-	// User cancelled, so apply the original settings
+	// if user cancelled, apply the original settings
 	if (!selection) {
-		targetConfig.update('fontFamily', targetConfig.fontFamily, true);
+		setFontList(type, currentFonts);
 		return;
 	}
 
 	if (selection.type === 'button') {
 		// Reset to default when user selects a button.
-		targetConfig.update('fontFamily', targetConfig.fontFamily, true);
+		setFontList(type, currentFonts);
 
 		if (selection.label === '$(add) Add Font') {
-			await addFont(target, existingFonts);
+			await addFont(type, currentFonts);
 		} else if (selection.label === '$(trash) Remove Font') {
-			await removeFont(target, existingFonts);
+			await removeFont(type, currentFonts);
 		}
-		return;
-	}
-
-	const index = existingFonts.indexOf(selection.label);
-	if (index !== -1) {
-		existingFonts.splice(index, 1);
-		existingFonts.splice(0, 0, selection.label);
-		targetConfig.update('fontFamily', existingFonts.join(', '), true);
 	}
 }
 
 // Show an input box for font size
-export async function setFontSize(target: Target): Promise<void> {
-	const targetConfig = getConfig(target);
+export async function setFontSize(target: ConfigType): Promise<void> {
+	const targetConfig = getFontConfiguration(target);
 	const currentFontSize = targetConfig.get<number>('fontSize');
 	const value = await window.showInputBox({
 		prompt: `Enter ${target} Font Size`,
@@ -79,33 +77,46 @@ export async function setFontSize(target: Target): Promise<void> {
 }
 
 // Add a font to the fontFamily and set it as active.
-export async function addFont(target: Target, fonts: string[]): Promise<void> {
-	const fontFamily = await window.showInputBox({ placeHolder: 'Font Name' });
-	if (fontFamily) {
-		getConfig(target).update(
-			'fontFamily',
-			[fontFamily, ...fonts].join(', '),
-			true,
-		);
+export async function addFont(
+	target: ConfigType,
+	fonts: string[],
+): Promise<void> {
+	const fontName = await window.showInputBox({ placeHolder: 'Font Name' });
+
+	if (!fontName) {
+		return;
 	}
+
+	const trimmed = fontName.trim();
+	if (!trimmed) {
+		return;
+	}
+
+	// Move existing font to the front, or add a new one at the front.
+	const updatedFonts = [trimmed, ...fonts.filter((font) => font !== trimmed)];
+
+	await setFontList(target, updatedFonts);
 }
 
 // Removes a font from the fontFamily.
 export async function removeFont(
-	target: Target,
+	target: ConfigType,
 	fonts: string[],
 ): Promise<void> {
-	const selection = await window.showQuickPick(fonts, {
+	const fontName = await window.showQuickPick(fonts, {
 		placeHolder: `Remove ${target} Font`,
 	});
 
-	if (!selection) {
+	if (!fontName) {
 		return;
 	}
 
-	getConfig(target).update(
-		'fontFamily',
-		fonts.filter((x) => x !== selection).join(', '),
-		true,
-	);
+	const trimmed = fontName.trim();
+	if (!trimmed) {
+		return;
+	}
+
+	const updatedFonts = fonts.filter((font) => font !== fontName);
+
+	await setFontList(target, updatedFonts);
 }

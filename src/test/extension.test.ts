@@ -12,6 +12,7 @@ suite('Extension Test Suite', () => {
 		assert.strictEqual('Consolas', fonts[0]);
 		assert.strictEqual('Hack', fonts[1]);
 		assert.strictEqual('Ubuntu Mono', fonts[2]);
+		assert.strictEqual('Jetbrains Mono', fonts[3]);
 		assert.strictEqual(4, fonts.length);
 	});
 });
