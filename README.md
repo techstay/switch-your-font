@@ -6,6 +6,25 @@
 
 This extension allows you to configure editor and terminal fonts quickly in a quickPick menu.
 
+## Config
+
+Some fonts have their own ligatures, now you can set them in `switch-your-font.ligaturesMapping`. When switching fonts, the corresponding ligatures also apply.
+
+Here are some examples.
+
+```json
+{
+  "switch-your-font.ligaturesMapping": {
+    "Cascadia Code": "'ss02', 'ss03', 'ss19', 'ss20'",
+    "Iosevka Nerd Font Mono": "'ss12', 'calt', 'dlig'",
+    "Jetbrains Mono": "'ss02'",
+    "Monaspace Argon": "'calt', 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'ss09', 'ss10', 'liga', 'cv62'",
+    "Monaspace Neon": "'calt', 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'ss09', 'ss10', 'liga', 'cv62', 'cv10'",
+    "Victor Mono Medium": "'ss01', 'ss06', 'ss07', 'ss08'"
+  }
+}
+```
+
 ## Commands
 
 ### > Switch Font

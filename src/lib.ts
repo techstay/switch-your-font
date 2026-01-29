@@ -1,8 +1,11 @@
 import { type QuickPickItem, window } from 'vscode';
 import {
 	type ConfigType,
+	getEditorFontLigaturesMapping,
 	getFontConfiguration,
+	getFontLigatures,
 	getFontList,
+	setFontLigatures,
 	setFontList,
 } from './util';
 
@@ -13,6 +16,7 @@ interface FontMenuItem extends QuickPickItem {
 // Show a quick pick menu for selecting font
 export async function selectFont(type: ConfigType): Promise<void> {
 	const currentFonts = getFontList(type);
+	const currentLigatures = getFontLigatures(type);
 
 	// Construct quick pick menu options.
 	const menuItems: FontMenuItem[] = [
@@ -26,14 +30,26 @@ export async function selectFont(type: ConfigType): Promise<void> {
 		placeHolder: `Select ${type} Font`,
 		onDidSelectItem: (selection: FontMenuItem) => {
 			if (selection.type === 'font') {
+				// Set fonts according to user selects
 				const newFonts = [
 					selection.label,
 					...currentFonts.filter((f) => f !== selection.label),
 				];
 				setFontList(type, newFonts);
+
+				// Set font ligatures by mappings
+				const ligaturesMapping = getEditorFontLigaturesMapping();
+
+				if (ligaturesMapping?.[selection.label]) {
+					setFontLigatures(type, ligaturesMapping[selection.label]);
+				} else {
+					// If no ligatures mapping found, restore to original ligatures
+					setFontLigatures(type, currentLigatures);
+				}
 			} else {
-				// For buttons, revert to original font temporarily
+				// For buttons, revert to original font
 				setFontList(type, currentFonts);
+				setFontLigatures(type, currentLigatures);
 			}
 		},
 	});

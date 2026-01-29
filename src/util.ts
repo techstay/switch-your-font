@@ -25,3 +25,41 @@ export function setFontList(
 	const config = getFontConfiguration(target);
 	return config.update('fontFamily', fonts.join(', '), true);
 }
+
+export function getFontLigatures(type: ConfigType) {
+	return type === 'Editor'
+		? workspace.getConfiguration('editor').get<string>('fontLigatures')
+		: workspace
+				.getConfiguration('terminal.integrated.fontLigatures')
+				.get<string>('featureSettings');
+}
+
+export function setFontLigatures(
+	type: ConfigType,
+	ligatures: string | boolean | undefined,
+) {
+	if (type === 'Editor') {
+		workspace
+			.getConfiguration('editor')
+			.update('fontLigatures', ligatures, true);
+	} else {
+		if (typeof ligatures === 'boolean') {
+			workspace
+				.getConfiguration('terminal.integrated.fontLigatures')
+				.update('enabled', ligatures, true);
+		} else if (typeof ligatures === 'string') {
+			workspace
+				.getConfiguration('terminal.integrated.fontLigatures')
+				.update('enabled', true, true);
+			workspace
+				.getConfiguration('terminal.integrated.fontLigatures')
+				.update('featureSettings', ligatures, true);
+		}
+	}
+}
+
+export function getEditorFontLigaturesMapping() {
+	return workspace
+		.getConfiguration('switch-your-font')
+		.get<Record<string, boolean | string>>('ligaturesMapping');
+}

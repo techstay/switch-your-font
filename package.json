@@ -49,7 +49,27 @@
         "command": "switch-your-font.setTerminalFontSize",
         "title": "Set Terminal Font Size"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Switch Your Font",
+      "properties": {
+        "switch-your-font.ligaturesMapping": {
+          "type": "object",
+          "default": {},
+          "description": "Mapping of font names to their ligature settings. The key is the font name (matching exactly), and the value is a boolean or a string for font ligatures (e.g., \"'ss02', 'ss03', 'calt'\").",
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "pnpm run package",
